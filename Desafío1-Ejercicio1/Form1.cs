@@ -33,18 +33,28 @@ namespace Desafío1_Ejercicio1
         private void btnencolar_Click(object sender, EventArgs e)
         {
             int valor = Convert.ToInt32(nupvalor.Value);    //guardamos el valor del numerical
-            Label milabel = new Label();                    //creación y personalización del lab
-            milabel.Text = valor.ToString();
-            milabel.BackColor = Color.Aqua;
-            milabel.Height = 50;
-            milabel.Width = 50;
-            milabel.TextAlign = ContentAlignment.MiddleCenter;
-            milabel.BorderStyle = BorderStyle.FixedSingle;
-            milabel.Location = new Point(x, y);
-            micola.Enqueue(milabel);                        //encolamos 
-            panel1.Controls.Add(milabel);                   //mostramos en panel
-            x += milabel.Width;                             //actualizamos posición
-           // timer1.Start();
+
+            if (Validar(valor))
+            {
+                Label milabel = new Label();                    //creación y personalización del lab
+                milabel.Text = valor.ToString();
+                milabel.BackColor = Color.Aqua;
+                milabel.Height = 50;
+                milabel.Width = 50;
+                milabel.TextAlign = ContentAlignment.MiddleCenter;
+                milabel.BorderStyle = BorderStyle.FixedSingle;
+                milabel.Location = new Point(x, y);
+                micola.Enqueue(milabel);                        //encolamos 
+                panel1.Controls.Add(milabel);                   //mostramos en panel
+                x += milabel.Width;                             //actualizamos posición
+                                                                // timer1.Start();
+            }
+            else
+            {
+                MessageBox.Show("Error, valor repetido");
+                nupvalor.Value = 0;
+            }
+
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -130,6 +140,22 @@ namespace Desafío1_Ejercicio1
             {
                 MessageBox.Show("Error en la ejecución: " + error);
             }
+        }
+
+        private bool Validar(int valor)
+        {
+            bool validar = true;
+
+            foreach(System.Windows.Forms.Label element in micola)
+            {
+                if(Convert.ToInt32(element.Text) == valor)
+                {
+                    validar = false;
+                    break;
+                }
+            }
+
+            return validar;
         }
     }
 }
